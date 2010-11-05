@@ -12,6 +12,9 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.fiap.leilao.web.event.StudentCoursePayload;
 import com.fiap.leilao.web.model.BaseEntity;
 import com.fiap.leilao.web.model.Course;
@@ -21,8 +24,7 @@ import com.fiap.leilao.web.model.Teacher;
 import com.fiap.leilao.web.qualifier.DataRepository;
 import com.fiap.leilao.web.qualifier.StudentAdded;
 import com.fiap.leilao.web.qualifier.StudentRemoved;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * Implements the {@link SchoolDao} as a {@link Stateless} EJB to take advantage
@@ -34,7 +36,7 @@ import org.slf4j.LoggerFactory;
 @Stateless
 public class SchoolJpaDao implements SchoolDao {
 
-	private static Logger log = LoggerFactory.getLogger(SchoolJpaDao.class);
+	private static Log log = LogFactory.getLog(SchoolJpaDao.class);
 
 	@DataRepository
 	@Inject
@@ -88,7 +90,7 @@ public class SchoolJpaDao implements SchoolDao {
 	@Override
 	public List<Student> searchStudents(SearchCriteria criteria,
 			int firstResult, int pageSize) {
-		log.debug("Searching students with criteria {}", criteria);
+		log.debug("Searching students with criteria {}"+ criteria);
 		Map<String, Object> params = new HashMap<String, Object>();
 		List<String> clauses = new ArrayList<String>();
 		String sql = "select distinct s from Student s left JOIN s.enrolled c left join c.teacher t";
