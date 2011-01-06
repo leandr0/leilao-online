@@ -27,6 +27,7 @@
 	<dependencyManagement>
 		<dependencies>
 
+			<!-- <groupId>javax</groupId> <artifactId>javaee-api</artifactId> <version>6.0</version> -->
 			<dependency>
 				<groupId>javax</groupId>
 				<artifactId>javaee-api</artifactId>
