@@ -3,8 +3,12 @@
  */
 package com.fiap.leilao.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -21,6 +25,21 @@ public class Item implements EntityBasic<Long> {
 	 */
 	private static final long serialVersionUID = 2763999461281718470L;
 
+	@Id
+	@GeneratedValue
+	@Column(name = "ID")
+	private Long id;
+	
+	@Column(name = "DESCRICAO", nullable = false)
+	private String descricao;
+	
+	@Column(name = "VALOR" , nullable = false)
+	private Double valor;
+	
+	@Lob
+	@Column(name = "FOTO")
+	private byte[] foto;
+	
 	@ManyToOne
 	@JoinColumn(name = "PRODUTO_ID", nullable = false)
 	private Produto produto;
@@ -30,8 +49,7 @@ public class Item implements EntityBasic<Long> {
 	 */
 	@Override
 	public Long getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 	/* (non-Javadoc)
@@ -39,8 +57,31 @@ public class Item implements EntityBasic<Long> {
 	 */
 	@Override
 	public void setId(Long id) {
-		// TODO Auto-generated method stub
+		this.id = id;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
 
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
+
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
 	}
 
 	public Produto getProduto() {
