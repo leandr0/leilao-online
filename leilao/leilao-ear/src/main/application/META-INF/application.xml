@@ -5,16 +5,7 @@
     <ejb>leilao-business-0.0.1-SNAPSHOT.ejb</ejb>
   </module>
   <module>
-    <ejb>leilao-service-0.0.1-SNAPSHOT.ejb</ejb>
-  </module>
-  <module>
     <ejb>leilao-domain-0.0.1-SNAPSHOT.ejb</ejb>
-  </module>
-  <module>
-    <web>
-      <web-uri>leilao-web-0.0.1-SNAPSHOT.war</web-uri>
-      <context-root>/leilao-web</context-root>
-    </web>
   </module>
   <library-directory>lib</library-directory>
 </application>
