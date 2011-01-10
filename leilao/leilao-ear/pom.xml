@@ -21,15 +21,15 @@
 			<artifactId>leilao-business</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>ejb</type>
-			<scope>compile</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.fiap</groupId>
 			<artifactId>leilao-domain</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>ejb</type>
-			<scope>compile</scope>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>com.fiap</groupId>
 			<artifactId>leilao-service</artifactId>
@@ -37,6 +37,7 @@
 			<type>ejb</type>
 			<scope>compile</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.fiap</groupId>
 			<artifactId>leilao-web</artifactId>
@@ -44,6 +45,7 @@
 			<type>war</type>
 			<scope>compile</scope>
 		</dependency>
+		 -->
 	</dependencies>
 
 	<build>
