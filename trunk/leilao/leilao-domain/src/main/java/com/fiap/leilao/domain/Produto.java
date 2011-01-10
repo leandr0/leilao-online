@@ -5,7 +5,11 @@ package com.fiap.leilao.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -22,13 +26,21 @@ public class Produto implements EntityBasic<Long> {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 480937383494357689L;
+	private static final long serialVersionUID = -7534417245600812692L;
+
+	@Id
+	@GeneratedValue
+	@Column(name = "ID")
+	private Long id;
+	
+	@Column(name = "DESCRICAO", nullable = false)
+	private String descricao;
 	
 	@OneToOne
 	@JoinColumn(name = "LEILAO_ID", nullable = false)
 	private Leilao leilao;
 	
-	@OneToMany(mappedBy = "produto")
+	@OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
 	private List<Item> itens;
 	
 	/* (non-Javadoc)
@@ -36,8 +48,7 @@ public class Produto implements EntityBasic<Long> {
 	 */
 	@Override
 	public Long getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 	/* (non-Javadoc)
@@ -45,8 +56,15 @@ public class Produto implements EntityBasic<Long> {
 	 */
 	@Override
 	public void setId(Long id) {
-		// TODO Auto-generated method stub
+		this.id = id;
+	}
 
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public Leilao getLeilao() {

@@ -5,44 +5,61 @@ package com.fiap.leilao.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.fiap.leilao.domain.type.StatusLeilao;
 
 /**
  * @author Leandro
  *
  */
+@Entity
+@Table(name = "LEILAO")
 public class Leilao implements EntityBasic<Long> {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2861797679346068361L;
+	private static final long serialVersionUID = 5568890762367416768L;
 
-	@OneToOne
-	@JoinColumn(name = "VENDEDOR_ID")
+	@Id
+	@GeneratedValue
+	@Column(name = "ID")
+	private Long id;
+	
+	@ManyToOne
+	@JoinColumn(name = "VENDEDOR_ID" , nullable = false)
 	private Usuario vendedor;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "COMPRADOR_ID")
 	private Usuario comprador;
 	
+	@OneToMany(mappedBy = "leilao")
 	private List<Lance> lances;
 	
+	@OneToOne(mappedBy = "leilao", cascade = CascadeType.ALL)
 	private Produto produto;
+	
+	private StatusLeilao status;
 	
 	@Override
 	public Long getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 	@Override
 	public void setId(Long id) {
-		// TODO Auto-generated method stub
-		
+		this.id = id;
 	}
 
 	public Usuario getVendedor() {
@@ -75,5 +92,13 @@ public class Leilao implements EntityBasic<Long> {
 
 	public void setProduto(Produto produto) {
 		this.produto = produto;
+	}
+
+	public StatusLeilao getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusLeilao status) {
+		this.status = status;
 	}	
 }
