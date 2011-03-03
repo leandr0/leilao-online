@@ -37,15 +37,14 @@
 			<type>ejb</type>
 			<scope>compile</scope>
 		</dependency>
-		
+		 -->
 		<dependency>
 			<groupId>com.fiap</groupId>
 			<artifactId>leilao-web</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>war</type>
-			<scope>compile</scope>
 		</dependency>
-		 -->
+		
 	</dependencies>
 
 	<build>
