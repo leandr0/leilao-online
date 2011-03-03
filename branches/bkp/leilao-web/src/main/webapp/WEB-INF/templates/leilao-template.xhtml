@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Leilão FIAP</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<h:outputStylesheet name="css/screen.css" />
+
+	<script type="text/javascript"
+		src="/leilao-web/resources/java-script/commons.js"></script>
+</h:head>
+<h:body>
+	<h:panelGroup id="page" layout="block">
+
+		<h:panelGroup id="header" layout="block">
+			<h1><a href="home.jsf">Leilão FIAP</a></h1>
+			<small>#{dataStatus}</small>
+		</h:panelGroup>
+		<h:form prependId="false">
+		<p:toolbar>
+			<p:toolbarGroup align="left">
+				<p:menubar >
+					 <p:submenu label="Início"  icon="ui-icon ui-icon-gear">
+					 	<p:submenu label="Leilão">
+							<p:menuitem url="/pages/criar-leilao.jsf" value="Criar Leilão" icon="ui-icon ui-icon-extlink"/>
+							<p:menuitem value="Enviar Lance" action="#{enviarLanceBean.listarLeiloes}" update="panelLeiloesAtivos" icon="ui-icon ui-icon-extlink"/>
+							<p:menuitem value="Gerenciar Leilões" action="#{gerenciarLeiloesPendentesBean.init}" update="panelLeiloesPendentes" icon="ui-icon ui-icon-extlink"/>
+						</p:submenu>
+						<p:submenu label="Administração">
+							<p:menuitem action="#{ui_leilaousuario_bean.carregarLeilaoUsuario}"  value="Meus Leilões"/>
+							<p:menuitem action="#{ui_leilaousuario_bean.carregarLeilaoLance}"  value="Meus Lances"/>
+							<p:menuitem action="#{ui_leilaousuario_bean.carregarLeilaoUsuario}"  value="Leilões Ganhos"/>
+						</p:submenu>
+					 </p:submenu> 
+				</p:menubar>
+			</p:toolbarGroup>
+			<p:toolbarGroup align="right">  
+				<p:commandButton  value="Home" action="leilao-home"
+					icon="ui-icon ui-icon-home" />
+				<p:commandButton value="Logout" 
+					action="#{loginBean.logout}"/>
+			</p:toolbarGroup>
+		</p:toolbar>
+	</h:form>
+		<h:panelGroup layout="block">
+			<ui:insert name="content">Main Content</ui:insert>
+		</h:panelGroup>
+
+		<h:panelGroup id="footer" layout="block">Footer goes Here<br />Generated using the Knappsack Java EE Maven Archetypes from <a
+				href="http://www.AndyGibson.net">www.AndyGibson.net</a>
+		</h:panelGroup>
+
+	</h:panelGroup>
+</h:body>
+</html>
