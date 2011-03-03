@@ -33,9 +33,6 @@ public class Item implements EntityBasic<Long> {
 	@Column(name = "DESCRICAO", nullable = false)
 	private String descricao;
 	
-	@Column(name = "VALOR" , nullable = false)
-	private Double valor;
-	
 	@Lob
 	@Column(name = "FOTO")
 	private byte[] foto;
@@ -66,14 +63,6 @@ public class Item implements EntityBasic<Long> {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public Double getValor() {
-		return valor;
-	}
-
-	public void setValor(Double valor) {
-		this.valor = valor;
 	}
 
 	public byte[] getFoto() {

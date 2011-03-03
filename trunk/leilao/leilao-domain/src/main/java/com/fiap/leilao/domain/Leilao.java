@@ -3,6 +3,7 @@
  */
 package com.fiap.leilao.domain;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -50,7 +51,14 @@ public class Leilao implements EntityBasic<Long> {
 	@OneToOne(mappedBy = "leilao", cascade = CascadeType.ALL)
 	private Produto produto;
 	
+	@Column(name = "STATUS" , nullable = false)
 	private StatusLeilao status;
+	
+	@Column(name = "VALOR_INICIAL" , nullable = false)
+	private Double valorInicial;
+	
+	@Column(name = "DT_FINAL" , nullable = false)
+	private Date dataFinal;
 	
 	@Override
 	public Long getId() {
@@ -100,5 +108,22 @@ public class Leilao implements EntityBasic<Long> {
 
 	public void setStatus(StatusLeilao status) {
 		this.status = status;
+	}
+
+	public Double getValorInicial() {
+		return valorInicial;
+	}
+
+	public void setValorInicial(Double valorInicial) {
+		//TODO: formatar com duas casas decimais
+		this.valorInicial = valorInicial;
+	}
+
+	public Date getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setDataFinal(Date dataFinal) {
+		this.dataFinal = dataFinal;
 	}	
 }

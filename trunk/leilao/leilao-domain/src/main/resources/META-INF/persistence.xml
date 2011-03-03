@@ -22,6 +22,8 @@
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="update"/>
+			<property name="jboss.entity.manager.jndi.name" value="leilaoEntityManager"/>
+			<property name="jboss.entity.manager.factory.jndi.name" value="leilaoEntityManagerFactory"/>
 		</properties>
 	</persistence-unit>
 
