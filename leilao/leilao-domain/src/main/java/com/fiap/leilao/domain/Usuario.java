@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 import com.fiap.leilao.domain.security.Seguranca;
 import com.fiap.leilao.domain.type.PerfilUsuario;
@@ -61,6 +62,10 @@ public class Usuario implements EntityBasic<Long> {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name  = "SEGURANCA_ID")
 	private Seguranca seguranca;
+	
+	@Column(name = "EMAIL", nullable = false)
+	@Pattern(regexp="([a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,4}+\\.[a-zA-Z]{2})|([a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,4})")
+	private String email;
 	
 	/* (non-Javadoc)
 	 * @see com.fiap.leilao.domain.EntityBasic#getId()
@@ -132,5 +137,13 @@ public class Usuario implements EntityBasic<Long> {
 
 	public void setSeguranca(Seguranca seguranca) {
 		this.seguranca = seguranca;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}	
 }

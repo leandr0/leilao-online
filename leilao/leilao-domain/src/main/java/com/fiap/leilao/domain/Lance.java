@@ -38,7 +38,7 @@ public class Lance implements EntityBasic<Long> {
 	private Date dataLance;
 	
 	@ManyToOne
-	@JoinColumn(name = "LANCE_ID", nullable = false)
+	@JoinColumn(name = "COMPRADOR_ID", nullable = false)
 	private Usuario usuario;
 	
 	@ManyToOne
