@@ -10,7 +10,7 @@
 
 	<properties>
 		<compileSource>1.6</compileSource>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
 		<jboss.home>${JBOSS_HOME}</jboss.home>
 		<jboss.domain>leilao</jboss.domain>
 	</properties>
@@ -36,6 +36,20 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.jboss.ejb3</groupId>
+				<artifactId>jboss-ejb3-ext-api</artifactId>
+				<version>1.1.1</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate.javax.persistence</groupId>
+				<artifactId>hibernate-jpa-2.0-api</artifactId>
+				<version>1.0.0.Final</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.8.1</version>
@@ -46,6 +60,19 @@
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-all</artifactId>
 				<version>1.8.5</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-module-testng</artifactId>
+				<version>1.4.7</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-api-mockito</artifactId>
+				<version>1.4.7</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -63,6 +90,11 @@
 				<version>1.1.1</version>
 			</dependency>
 
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.8.3</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -92,6 +124,25 @@
 				<scope>provided</scope>
 			</dependency>
 
+
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-server</artifactId>
+				<version>1.5</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.primefaces</groupId>
+				<artifactId>primefaces</artifactId>
+				<version>2.2.RC2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.3</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -115,7 +166,6 @@
 					<version>2.3</version>
 					<configuration>
 						<ejbVersion>3.1</ejbVersion>
-						<generateClient>false</generateClient>
 					</configuration>
 				</plugin>
 
@@ -146,4 +196,12 @@
 		</pluginManagement>
 	</build>
 
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>Prime Technology Maven Repository</name>
+			<url>http://repository.prime.com.tr</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 </project>

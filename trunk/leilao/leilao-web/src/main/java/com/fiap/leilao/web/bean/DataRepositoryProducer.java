@@ -3,6 +3,7 @@ package com.fiap.leilao.web.bean;
 import javax.ejb.Stateless;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.InjectionPoint;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -29,7 +30,7 @@ public class DataRepositoryProducer implements DataRepositoryProducerLocal {
 		return entityManager;
 	}
 	
-	@PersistenceContext
+	@PersistenceContext 
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
