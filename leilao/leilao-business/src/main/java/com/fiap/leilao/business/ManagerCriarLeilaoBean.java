@@ -14,7 +14,7 @@ import com.fiap.leilao.business.exception.LeilaoBusinessException;
 import com.fiap.leilao.domain.Item;
 import com.fiap.leilao.domain.Leilao;
 import com.fiap.leilao.domain.Usuario;
-import com.fiap.leilao.domain.bean.LeilaBean;
+import com.fiap.leilao.domain.bean.LeilaoBean;
 import com.fiap.leilao.domain.type.PerfilUsuario;
 import com.fiap.leilao.domain.type.StatusLeilao;
 
@@ -33,7 +33,7 @@ public class ManagerCriarLeilaoBean implements CriarLeilaoBean {
 	private static final long serialVersionUID = -752521412915840616L;
 	
 	@EJB
-	private LeilaBean leilaoBean;
+	private LeilaoBean leilaoBean;
 	
 	//TODO: Tratar acesso pelo JAAS
 	@Override
