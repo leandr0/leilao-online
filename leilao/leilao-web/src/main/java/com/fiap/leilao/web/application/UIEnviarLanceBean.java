@@ -11,9 +11,11 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import com.fiap.leilao.business.EnviarLanceBean;
+import com.fiap.leilao.business.exception.LeilaoBusinessException;
 import com.fiap.leilao.domain.Lance;
 import com.fiap.leilao.domain.Leilao;
 import com.fiap.leilao.domain.Usuario;
+import com.fiap.leilao.domain.exception.LeilaoDomainArgumentException;
 
 /**
  * @author Leandro
@@ -40,7 +42,7 @@ public class UIEnviarLanceBean extends UIAbstractBean {
 	public String listarLeiloes(){
 
 		try{
-			leiloesAtivos = enviarLanceBean.buscarLeiloesAtivos();
+			leiloesAtivos = enviarLanceBean.buscarLeiloesAtivos(getUsuario());
 		}catch (Throwable e) {
 			System.err.println(e.getMessage());
 		}
@@ -50,8 +52,7 @@ public class UIEnviarLanceBean extends UIAbstractBean {
 
 	public String selecionarLeilao(){
 
-		String idLeilao = FacesContext.getCurrentInstance().getExternalContext()
-		.getRequestParameterMap().get("leilaoAction");
+		String idLeilao = getExternalContext().getRequestParameterMap().get("leilaoAction");
 
 		if(idLeilao != null){
 			for (Leilao ll : leiloesAtivos) {
@@ -62,8 +63,16 @@ public class UIEnviarLanceBean extends UIAbstractBean {
 			}
 		}
 
-		leilao.getProduto().setItens(
-				enviarLanceBean.buscarItensProduto(leilao.getProduto()));
+		try {
+			leilao.getProduto().setItens(
+					enviarLanceBean.buscarItensProduto(leilao.getProduto()));
+		} catch (LeilaoBusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LeilaoDomainArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return null;
 	}
@@ -73,19 +82,21 @@ public class UIEnviarLanceBean extends UIAbstractBean {
 		try{
 
 			if(lance.getValor().doubleValue() <= 0.0){
-				showMessageWar("O valor do lance deve ser maior que zero");
+				showMessageWarn("O valor do lance deve ser maior que zero");
 			}else if(lance.getValor().doubleValue() < leilao.getValorInicial().doubleValue()){
-				showMessageWar("O valor do lance deve ser maior ou igual ao valor inicial do leilão");
+				showMessageWarn("O valor do lance deve ser maior ou igual ao valor inicial do leilão");
 			}else{
 
-				Usuario usu = new Usuario();
-				usu.setId(2L);
+				Usuario usu = getUsuario();
 				lance.setLeilao(leilao);
 				enviarLanceBean.enviarLance(lance, usu);
 
 				showMessageInfo("Lance enviado com sucesso!");
 			}
-		}catch (Throwable e) {
+		}catch (LeilaoDomainArgumentException e) {
+			showMessageWarn(e.getMessage());
+		}
+		catch (Throwable e) {
 			showMessageError("Ocorreu um erro ao enviar o lance ao leilão.Por favor entre em contato com o Administrador do sistema");
 		}finally{
 			lance = new Lance();

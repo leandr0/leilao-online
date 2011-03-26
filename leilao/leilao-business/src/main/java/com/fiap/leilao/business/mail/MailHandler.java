@@ -3,6 +3,8 @@
  */
 package com.fiap.leilao.business.mail;
 
+import java.io.Serializable;
+
 import javax.enterprise.event.Observes;
 
 import com.fiap.leilao.business.event.LeilaoEvent;
@@ -13,8 +15,14 @@ import com.fiap.leilao.business.qualifier.ReprovarLeilao;
  * @author Leandro
  *
  */
-public class MailHandler {
+public class MailHandler implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3133330871993872107L;
+	
+	
 	private LeilaoMail leilaoMail = new ManagerLeilaoMail();
 
 	public void aprovarLeilao(@Observes @AprovarLeilao LeilaoEvent event){
@@ -22,8 +30,8 @@ public class MailHandler {
 		try{
 			
 			leilaoMail.addEmailTo(event.getLeilao().getVendedor().getEmail())
-			.addSubject("LEILAO APROVADO !!!")
-			.enviarMensagem("SEU LEILAO NUMERO : [ "+event.getLeilao().getId()+" ] FOI ACEITO");
+			.addSubject("LEILAO APROVADO ")
+			.enviarMensagemHTML(event.getLeilao(), TemplateMessageMail.APROVAR_LEILAO_MAIL);
 			
 		}catch (Throwable e) {
 			//TODO : LOG
@@ -36,8 +44,8 @@ public class MailHandler {
 		try{
 
 			leilaoMail.addEmailTo(event.getLeilao().getVendedor().getEmail())
-			.addSubject("LEILAO REPROVADO !!!")
-			.enviarMensagem("SEU LEILAO NUMERO : [ "+event.getLeilao().getId()+" ] NÃO FOI ACEITO");
+			.addSubject("LEILAO REPROVADO")
+			.enviarMensagemHTML(event.getLeilao(), TemplateMessageMail.REJEITAR_LEILAO_MAIL);
 			
 		}catch (Throwable e) {
 			//TODO : LOG

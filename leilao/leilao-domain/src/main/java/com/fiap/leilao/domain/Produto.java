@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Cascade;
 
 /**
  * @author Leandro
@@ -34,13 +37,18 @@ public class Produto implements EntityBasic<Long> {
 	private Long id;
 	
 	@Column(name = "DESCRICAO", nullable = false)
+	@Size(min = 5 , message = "A descrição do leilão deve ter no mínimo 5 caracteres")
 	private String descricao;
 	
 	@OneToOne
 	@JoinColumn(name = "LEILAO_ID", nullable = false)
 	private Leilao leilao;
 	
-	@OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
+	
+	@SuppressWarnings("deprecation")
+	@OneToMany(mappedBy = "produto",cascade = CascadeType.ALL )
+	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+	@Size(min = 1 , message = "O leilão deve ter no mínimo 1 ítem")
 	private List<Item> itens;
 	
 	/* (non-Javadoc)

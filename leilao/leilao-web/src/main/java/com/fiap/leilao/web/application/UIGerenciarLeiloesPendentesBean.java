@@ -3,7 +3,6 @@
  */
 package com.fiap.leilao.web.application;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +11,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.jfree.util.Log;
+
 import com.fiap.leilao.business.AutorizarLeilaoBean;
+import com.fiap.leilao.business.exception.LeilaoBusinessException;
 import com.fiap.leilao.domain.Leilao;
 
 /**
@@ -21,7 +23,7 @@ import com.fiap.leilao.domain.Leilao;
  */
 @ManagedBean(name = "gerenciarLeiloesPendentesBean")
 @SessionScoped
-public class UIGerenciarLeiloesPendentesBean implements Serializable {
+public class UIGerenciarLeiloesPendentesBean extends UIAbstractBean {
 
 	/**
 	 * 
@@ -48,19 +50,25 @@ public class UIGerenciarLeiloesPendentesBean implements Serializable {
 
 	public String listarLeiloesPendentes(){
 
-		leiloesPendentes = autorizarLeilaoBean.buscarLeiloesPendentes();
+		try {
+			leiloesPendentes = autorizarLeilaoBean.buscarLeiloesPendentes();
+		} catch (LeilaoBusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return null;
 	}
 
 	public String autorizarLeilaoSelecionado(){
 
-		if(leilao != null){
-			if(leilao.getProduto() != null)
-				System.out.println(leilao.getProduto().getDescricao());
+		try {
+			autorizarLeilaoBean.atutorizarLeilao(leilao);
+			showMessageInfo("Leilão autorizado com sucesso.");
+		} catch (LeilaoBusinessException e) {
+			Log.error(e.getMessage());
+			showMessageError("Erro ao autorizar leilão.");
 		}
-
-		autorizarLeilaoBean.atutorizarLeilao(leilao);
 
 		listarLeiloesPendentes();
 
@@ -70,12 +78,13 @@ public class UIGerenciarLeiloesPendentesBean implements Serializable {
 	
 	public String cancelarLeilaoSelecionado(){
 
-		if(leilao != null){
-			if(leilao.getProduto() != null)
-				System.out.println(leilao.getProduto().getDescricao());
+		try {
+			autorizarLeilaoBean.cancelarLeilao(leilao);
+			showMessageInfo("Leilão cancelado com sucesso.");
+		} catch (LeilaoBusinessException e) {
+			Log.error(e.getMessage());
+			showMessageError("Erro ao autorizar leilão.");
 		}
-
-		autorizarLeilaoBean.cancelarLeilao(leilao);
 
 		listarLeiloesPendentes();
 
@@ -96,26 +105,16 @@ public class UIGerenciarLeiloesPendentesBean implements Serializable {
 			}
 		}
 		
-		leilao.getProduto().setItens(
-				autorizarLeilaoBean.buscarItensLeilao(leilao.getProduto()));
-		
-		return null;
-	}
-
-	public String rejeitarLeilao(){
-
-		if(leilao != null){
-			if(leilao.getProduto() != null)
-				System.out.println(leilao.getProduto().getDescricao());
+		try {
+			leilao.getProduto().setItens(
+					autorizarLeilaoBean.buscarItensLeilao(leilao.getProduto()));
+		} catch (LeilaoBusinessException e) {
+			Log.error(e.getMessage());
 		}
-
-		autorizarLeilaoBean.atutorizarLeilao(leilao);
-
-		listarLeiloesPendentes();
 		
 		return null;
 	}
-	
+
 	public Leilao getLeilao() {
 		return leilao;
 	}

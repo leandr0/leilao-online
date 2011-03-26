@@ -24,20 +24,31 @@ public class Seguranca implements EntityBasic<Long> {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4799634596281141708L;
+	private static final long serialVersionUID = -5836149590077785964L;
 
 	@Id
 	@GeneratedValue
 	@Column(name = "ID")
 	private Long id;
 	
-	@Column(name = "LOGIN", nullable = false , unique = true )	
+	@Column(name = "LOGIN", nullable = false , unique = true )
+	/**
+	@NotNull(message = "O login não pode ser vazio ")
+	@Size(min = 3 , message = "O login deve conter no mínimo 3 caracteres")
+	**/
 	private String login;
 	
 	@Column(name = "SENHA" , nullable = false)
+	/**
+	@NotNull(message = "A senha não pode ser vazio ")
+	@Size(min = 5 , message = "A senha deve conter no mínimo 5 caracteres")
+	**/
 	private String senha;
-
-	@OneToOne(mappedBy = "seguranca")
+	
+	@Column(name = "CHAVE_SERVICO" , nullable = false , unique = true)
+	private String chaveServico;
+	
+	@OneToOne(mappedBy = "seguranca" )
 	private Usuario usuario;
 	
 	/* (non-Javadoc)
@@ -78,5 +89,13 @@ public class Seguranca implements EntityBasic<Long> {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public String getChaveServico() {
+		return chaveServico;
+	}
+
+	public void setChaveServico(String chaveServico) {
+		this.chaveServico = chaveServico;
 	}
 }

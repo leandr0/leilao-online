@@ -12,42 +12,45 @@ import com.fiap.leilao.domain.Lance;
 import com.fiap.leilao.domain.Leilao;
 import com.fiap.leilao.domain.Produto;
 import com.fiap.leilao.domain.Usuario;
+import com.fiap.leilao.domain.exception.LeilaoDomainArgumentException;
 
 /**
+ * Interface que permite enviar lances aos leilões
  * @author Leandro
  *
  */
 public interface EnviarLanceBean extends Serializable{
-	
+
+	/**
+	 * Mapeamento JNDI para o EJB Bean que implementará esta interface
+	 */
 	public static String JNDI_NAME = "enviarLanceBean";
 	
 	/**
-	 * 
-	 * @param lance
-	 * @param usuario
-	 * @return
+	 * Método que permite enviar um {@link Lance} a um {@link Leilao}
+	 * @param lance {@link Lance}
+	 * @param usuario {@link Usuario}
 	 * @throws LeilaoBusinessException
-	 * @throws IllegalArgumentException
+	 * @throws LeilaoDomainArgumentException
 	 */
-	public Long enviarLance(Lance lance , Usuario usuario) throws LeilaoBusinessException , IllegalArgumentException;
+	public void enviarLance(Lance lance , Usuario usuario) throws LeilaoBusinessException , LeilaoDomainArgumentException;
 
 	/**
-	 * 
-	 * @return
+	 * Método retorna todos os leilões ativos que não pertencem ao {@link Usuario} informado como <p>
+	 * parâmetro , ou seja , retorna os Leiões que o Usuário pode enviar lances
+	 * @param usuario {@link Usuario}
+	 * @return {@link List}{@code <}{@link Leilao}{@code>}
 	 * @throws LeilaoBusinessException
-	 * @throws IllegalArgumentException
+	 * @throws LeilaoDomainArgumentException
 	 */
-	public List<Leilao> buscarLeiloesAtivos() throws LeilaoBusinessException , IllegalArgumentException;
+	public List<Leilao> buscarLeiloesAtivos(Usuario usuario) throws LeilaoBusinessException , LeilaoDomainArgumentException;
 	
+
 	/**
-	 * 
-	 * @param produto
-	 * @return
+	 * Busca na base de dados todos os Itens vinculados a um produto , que está vinculado a um {@link Leilao}
+	 * @param produto {@link Produto}
+	 * @return {@link List}{@code <}{@link Item}{@code >}
 	 * @throws LeilaoBusinessException
-	 * @throws IllegalArgumentException
 	 */
-	public List<Item> buscarItensProduto(Produto produto) throws LeilaoBusinessException , IllegalArgumentException;
-	
-	public void enviarEmail(String mensagem) throws LeilaoBusinessException , IllegalArgumentException;
-	
+	public List<Item> buscarItensProduto(Produto produto) throws LeilaoBusinessException , LeilaoDomainArgumentException;
 }

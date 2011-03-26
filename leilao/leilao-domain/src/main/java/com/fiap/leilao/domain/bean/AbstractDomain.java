@@ -9,41 +9,42 @@ import com.fiap.leilao.domain.EntityBasic;
 import com.fiap.leilao.domain.exception.LeilaoDomainException;
 
 /**
+ * Interface para operações básicas com as entidades de domínio
  * @author Leandro
  *
  */
 public interface AbstractDomain <E extends EntityBasic<?>> extends Serializable{
 
 	/**
-	 * 
-	 * @param entity
-	 * @return
+	 * Persiste uma entidade na base de dados
+	 * @param entity {@link EntityBasic}
+	 * @return {@link EntityBasic}
 	 * @throws IllegalArgumentException
 	 * @throws LeilaoDomainException
 	 */
 	public E insert(E entity)throws IllegalArgumentException , LeilaoDomainException;
 	
 	/**
-	 * 
-	 * @param entity
+	 * Exclui uma entidade da base de dados
+	 * @param entity {@link EntityBasic}
 	 * @throws IllegalArgumentException
 	 * @throws LeilaoDomainException
 	 */
 	public void delete(E entity)throws IllegalArgumentException , LeilaoDomainException;
 	
 	/**
-	 * 
-	 * @param entity
-	 * @return
+	 * Pequisa um entidade pela chave primária
+	 * @param entity {@link EntityBasic}
+	 * @return {@link EntityBasic}
 	 * @throws IllegalArgumentException
 	 * @throws LeilaoDomainException
 	 */
 	public E find(E entity)throws IllegalArgumentException , LeilaoDomainException;
 	
 	/**
-	 * 
-	 * @param entity
-	 * @return
+	 * Atualiza uma entidade pela chave primária
+	 * @param entity {@link EntityBasic}
+	 * @return {@link EntityBasic}
 	 * @throws IllegalArgumentException
 	 * @throws LeilaoDomainException
 	 */

@@ -15,6 +15,7 @@ import javax.persistence.criteria.Root;
 import com.fiap.leilao.domain.Item;
 import com.fiap.leilao.domain.Produto;
 import com.fiap.leilao.domain.exception.LeilaoDomainException;
+import com.fiap.leilao.domain.exception.LeilaoDomainArgumentException;
 
 /**
  * @author Leandro
@@ -33,10 +34,10 @@ public class ManagerItemBean extends AbstractDomainBean<Item> implements ItemBea
 	 * @see com.fiap.leilao.domain.bean.ItemBean#getItensProduto(com.fiap.leilao.domain.Produto)
 	 */
 	@Override
-	public List<Item> getItensProduto(Produto produto)throws IllegalArgumentException, LeilaoDomainException {
+	public List<Item> getItensProduto(Produto produto)throws LeilaoDomainArgumentException, LeilaoDomainException {
 
 		if(produto == null || produto.getId() == null)
-			throw new IllegalArgumentException("Produto invalido para pesquisa");
+			throw new LeilaoDomainArgumentException("Produto invalido para pesquisa");
 
 		try{
 			CriteriaBuilder 		criteriaBuilder = entityManager.getCriteriaBuilder();
