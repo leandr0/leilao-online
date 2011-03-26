@@ -17,10 +17,11 @@ import com.fiap.leilao.domain.bean.UsuarioBean;
 @SessionScoped
 public class UILoginBean extends UIAbstractBean{
 
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2265199627842109360L;
+	private static final long serialVersionUID = -1155172418846104116L;
 
 	private String login;
 
@@ -34,12 +35,12 @@ public class UILoginBean extends UIAbstractBean{
 		try{
 			
 			setAttributeInSession("usuario",
-					usuarioBean.findByLoginSenha(login, senha));
+					usuarioBean.pesquisaLoginSenha(login, senha));
 			
 			return "leilao-home";
 		}
 		catch (IllegalArgumentException e) {
-			showMessageWar(e.getMessage());
+			showMessageWarn(e.getMessage());
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -53,7 +54,7 @@ public class UILoginBean extends UIAbstractBean{
 
 	public String logout(){
 		session.invalidate();
-		return null;
+		return "home";
 	}
 
 	public String getLogin() {

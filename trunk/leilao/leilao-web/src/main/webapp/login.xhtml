@@ -8,24 +8,12 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 		<h:head>
-			
-			<script type="text/javascript">
-				function handleLoginRequest(xhr, status, args) {
-					if(args.validationFailed || !args.loggedIn) {
-						jQuery('#dialog').effect("shake", { times:3 }, 100);
-					} else {
-						dlg.hide();
-						jQuery('#loginLink').fadeOut();
-					}
-				}
-			</script>
-				
+			<h:outputStylesheet name="screen.css" library="css"/>
+			<h:outputScript name="login.js" library="javascript"/>
 		</h:head>
+		
 		<h:body>
-			<h:outputLink id="loginLink" value="javascript:void(0)" onclick="dlg.show()" title="login">
-				<p:graphicImage value="/resources/images/login.png" />
-			</h:outputLink>
-	
+
 			<p:growl id="growl" showDetail="true" life="3000" />
 	
 			<p:dialog id="dialog" header="Login" widgetVar="dlg">

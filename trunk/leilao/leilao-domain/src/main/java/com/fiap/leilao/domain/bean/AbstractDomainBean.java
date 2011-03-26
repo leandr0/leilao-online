@@ -4,6 +4,8 @@
 package com.fiap.leilao.domain.bean;
 
 import javax.annotation.Resource;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
@@ -50,6 +52,7 @@ public abstract class AbstractDomainBean<E extends EntityBasic<?>> implements Ab
 	 * @see com.fiap.leilao.domain.bean.AbstractDomain#delete(com.fiap.leilao.domain.EntityBasic)
 	 */
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void delete(E entity) throws IllegalArgumentException , LeilaoDomainException{
 
 		if(entity == null || entity.getId() == null)

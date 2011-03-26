@@ -11,12 +11,10 @@ import javax.ejb.MessageDriven;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
-import javax.jms.TextMessage;
 
 import org.jboss.ejb3.annotation.ResourceAdapter;
 
 import com.fiap.leilao.domain.Lance;
-import com.fiap.leilao.domain.Leilao;
 import com.fiap.leilao.domain.bean.LanceBean;
 
 
@@ -32,7 +30,7 @@ import com.fiap.leilao.domain.bean.LanceBean;
 				),
 				@ActivationConfigProperty(
 						propertyName = "destination",
-						propertyValue = ResourceAdapterMessage.JNDI_QUEUE_NAME
+						propertyValue = ResourceAdapterMessage.JNDI_QUEUE_LANCE_NAME
 				)		
 		}
 )

@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
 
 import com.fiap.leilao.domain.type.StatusLeilao;
 
@@ -55,10 +56,17 @@ public class Leilao implements EntityBasic<Long> {
 	private StatusLeilao status;
 	
 	@Column(name = "VALOR_INICIAL" , nullable = false)
+	@DecimalMin(value = "0.01" , message = "O valor inicial é inválido")
 	private Double valorInicial;
 	
 	@Column(name = "DT_FINAL" , nullable = false)
 	private Date dataFinal;
+	
+	@Column(name = "VALOR_GANHADOR" )
+	private Double valorGanhador;
+	
+	@Column(name = "DT_CADASTRO" , nullable = false)
+	private Date dataCadastro;
 	
 	@Override
 	public Long getId() {
@@ -125,5 +133,21 @@ public class Leilao implements EntityBasic<Long> {
 
 	public void setDataFinal(Date dataFinal) {
 		this.dataFinal = dataFinal;
+	}
+
+	public Double getValorGanhador() {
+		return valorGanhador;
+	}
+
+	public void setValorGanhador(Double valorGanhador) {
+		this.valorGanhador = valorGanhador;
+	}
+
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
 	}	
 }

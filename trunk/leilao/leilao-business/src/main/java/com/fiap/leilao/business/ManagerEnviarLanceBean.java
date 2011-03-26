@@ -11,7 +11,6 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 import com.fiap.leilao.business.exception.LeilaoBusinessException;
-import com.fiap.leilao.business.mail.ManagerLeilaoMail;
 import com.fiap.leilao.business.message.EnviarMessageLanceBean;
 import com.fiap.leilao.domain.Item;
 import com.fiap.leilao.domain.Lance;
@@ -20,11 +19,17 @@ import com.fiap.leilao.domain.Produto;
 import com.fiap.leilao.domain.Usuario;
 import com.fiap.leilao.domain.bean.ItemBean;
 import com.fiap.leilao.domain.bean.LeilaoBean;
-import com.fiap.leilao.domain.type.StatusLeilao;
+import com.fiap.leilao.domain.exception.LeilaoDomainArgumentException;
 
 /**
+ * Bean que permite enviar lances aos leilões
  * @author Leandro
  *
+ */
+/*
+ * O bean é anotado com @Asynchronous, pois para as ações que enviam mensagens JMS
+ * podem demorar , devido a disponibilidade da rede ou do broker JMS
+ * Assim não prendendo as requisições
  */
 @Asynchronous
 @Remote(EnviarLanceBean.class)
@@ -34,7 +39,7 @@ public class ManagerEnviarLanceBean implements EnviarLanceBean {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5560596108270139544L;
+	private static final long serialVersionUID = -2599603693648851218L;
 
 	@EJB
 	private EnviarMessageLanceBean enviarMessageLanceBean;
@@ -49,46 +54,38 @@ public class ManagerEnviarLanceBean implements EnviarLanceBean {
 	 * @see com.fiap.leilao.business.EnviarLanceBean#enviarLance(com.fiap.leilao.domain.Lance, com.fiap.leilao.domain.Usuario)
 	 */
 	@Override
-	public Long enviarLance(Lance lance, Usuario usuario)throws LeilaoBusinessException , IllegalArgumentException{
+	public void enviarLance(Lance lance, Usuario usuario)throws LeilaoBusinessException , LeilaoDomainArgumentException{
 
 		if(lance == null || lance.getValor().doubleValue() <= 0.0)
-			throw new IllegalArgumentException("Lance invalido");
-		//TODO : descomentar
-		if(lance.getLeilao() == null /*|| lance.getLeilao().getVendedor().getId().equals(usuario.getId())*/)
-			throw new IllegalArgumentException("Usuario nao pode efetuar o lance");
+			throw new LeilaoDomainArgumentException("Lance inválido");
 
+		if(lance.getLeilao() == null || lance.getLeilao().getVendedor().getId().equals(usuario.getId()))
+			throw new LeilaoDomainArgumentException("Usuário não pode efetuar o lance");
+
+		if(lance.getLeilao() == null || lance.getLeilao().getValorInicial().doubleValue() > lance.getValor().doubleValue())
+			throw new LeilaoDomainArgumentException("O valor do lance é menor que o valor mínimo do leilão");
+		
+		
 		try{
 
 			lance.setUsuario(usuario);
 
 			enviarMessageLanceBean.enviarObjectMessage(lance);
 
-			return 0L;
-
 		}catch (Throwable e) {
 			throw new LeilaoBusinessException(e);
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.fiap.leilao.business.EnviarLanceBean#buscarLeiloesAtivos(com.fiap.leilao.domain.Usuario)
+	 */
 	@Override
-	public void enviarEmail(String mensagem) throws LeilaoBusinessException,IllegalArgumentException {
+	public List<Leilao> buscarLeiloesAtivos(Usuario usuario) throws LeilaoBusinessException,LeilaoDomainArgumentException {
 		try{
-
-			new ManagerLeilaoMail()
-			.addEmailTo("leandro1604@gmail.com")
-			.addSubject("JBOSS MAIL")
-			.enviarMensagem(mensagem);
-			
-		}catch (Exception e) {
-			throw new LeilaoBusinessException(e);
-		}
-	}
-
-	@Override
-	public List<Leilao> buscarLeiloesAtivos() throws LeilaoBusinessException,IllegalArgumentException {
-		try{
-			return leilaoBean.searchLeilaoByStatus(StatusLeilao.INICADO);
-		}catch (IllegalArgumentException e) {
+			return leilaoBean.pesquisaLeilaoEnviarLance(usuario);
+		}catch (LeilaoDomainArgumentException e) {
 			throw e;
 		}
 		catch (Exception e) {
@@ -97,10 +94,10 @@ public class ManagerEnviarLanceBean implements EnviarLanceBean {
 	}
 
 	@Override
-	public List<Item> buscarItensProduto(Produto produto)throws LeilaoBusinessException, IllegalArgumentException {
+	public List<Item> buscarItensProduto(Produto produto)throws LeilaoBusinessException, LeilaoDomainArgumentException {
 		try{
 			return itemBean.getItensProduto(produto);
-		}catch (IllegalArgumentException e) {
+		}catch (LeilaoDomainArgumentException e) {
 			throw e;
 		}catch (Exception e) {
 			throw new LeilaoBusinessException(e.getMessage());

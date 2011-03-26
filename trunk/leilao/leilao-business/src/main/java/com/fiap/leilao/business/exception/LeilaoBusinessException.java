@@ -7,7 +7,7 @@ package com.fiap.leilao.business.exception;
  * @author Leandro
  *
  */
-public class LeilaoBusinessException extends RuntimeException {
+public class LeilaoBusinessException extends Exception {
 
 	/**
 	 * 

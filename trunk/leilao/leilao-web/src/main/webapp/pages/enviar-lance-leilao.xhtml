@@ -18,8 +18,8 @@
 
 		<h:form prependId="false">
 
-			<div id="divLeiloes"><p:panel header="Leilões"
-				id="panelLeiloesAtivos">
+			<div id="divLeiloes">
+				<p:panel header="Leilões" id="panelLeiloesAtivos">
 				<p:dataTable rendered="#{!empty enviarLanceBean.leiloesAtivos}"
 					var="leilao" value="#{enviarLanceBean.leiloesAtivos}"
 					paginator="true" rows="10" id="dataTableLeiloes">
@@ -29,6 +29,21 @@
 						</f:facet>
 						<h:outputText value="#{leilao.produto.descricao}" />
 					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputLabel value="Data Limite" />
+						</f:facet>
+						<h:outputText value="#{leilao.dataFinal}" >
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputLabel value="Valor Inicial" />
+						</f:facet>
+						<h:outputText value="#{leilao.valorInicial}" />
+					</p:column>
+					
 					<p:column>
 						<f:facet name="header">
 							<h:outputLabel value="Ação" />
@@ -66,6 +81,12 @@
 						</f:facet>
 						<h:outputText value="#{item.descricao}" />
 					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputLabel value="Quantidade" />
+						</f:facet>
+						<h:outputText value="#{item.quantidade}" />
+					</p:column>
 				</p:dataTable>
 
 				<p:commandButton value="Enviar Lance"
@@ -99,7 +120,7 @@
 				</f:facet>
 
 				<h:panelGroup id="bottomPanel" style="margin-right:200px;">
-					<p:messages />
+					<p:messages showDetail="true"/>
 				</h:panelGroup>
 			</p:notificationBar>
 

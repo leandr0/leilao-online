@@ -8,9 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author Leandro
@@ -31,15 +31,18 @@ public class Item implements EntityBasic<Long> {
 	private Long id;
 	
 	@Column(name = "DESCRICAO", nullable = false)
+	//@Size(min = 5 , message = "A descrição do ítem deve ter no mínimo 5 caracteres")
 	private String descricao;
 	
-	@Lob
-	@Column(name = "FOTO")
-	private byte[] foto;
+	@Column(name = "QUANTIDADE" , nullable = false)
+	private Integer quantidade = 1;
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "PRODUTO_ID", nullable = false)
 	private Produto produto;
+	
+	@Transient
+	private boolean select;
 	
 	/* (non-Javadoc)
 	 * @see com.fiap.leilao.domain.EntityBasic#getId()
@@ -65,19 +68,27 @@ public class Item implements EntityBasic<Long> {
 		this.descricao = descricao;
 	}
 
-	public byte[] getFoto() {
-		return foto;
-	}
-
-	public void setFoto(byte[] foto) {
-		this.foto = foto;
-	}
-
 	public Produto getProduto() {
 		return produto;
 	}
 
 	public void setProduto(Produto produto) {
 		this.produto = produto;
+	}
+
+	public boolean isSelect() {
+		return select;
+	}
+
+	public void setSelect(boolean select) {
+		this.select = select;
+	}
+
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
 	}
 }

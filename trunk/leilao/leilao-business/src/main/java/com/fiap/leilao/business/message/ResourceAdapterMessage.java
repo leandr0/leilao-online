@@ -24,5 +24,10 @@ public interface ResourceAdapterMessage extends Serializable {
 	/**
 	 * 
 	 */
-	public static final String JNDI_QUEUE_NAME = "/queue/recebeLanceLeilao";
+	public static final String JNDI_QUEUE_LANCE_NAME = "/queue/recebeLanceLeilao";
+	
+	/**
+	 * 
+	 */
+	public static final String JNDI_QUEUE_RELATORIO_NAME = "/queue/solicitacaoRelatorioLeilao";
 }

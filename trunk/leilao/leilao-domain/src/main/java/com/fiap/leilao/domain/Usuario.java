@@ -17,7 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotNull;
 
 import com.fiap.leilao.domain.security.Seguranca;
 import com.fiap.leilao.domain.type.PerfilUsuario;
@@ -33,7 +33,7 @@ public class Usuario implements EntityBasic<Long> {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7323841700391064976L;
+	private static final long serialVersionUID = 8258708346935938077L;
 
 	@Id
 	@GeneratedValue
@@ -47,7 +47,8 @@ public class Usuario implements EntityBasic<Long> {
 	private Date dataNascimento;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "PERFIL")
+	@Column(name = "PERFIL" , nullable = false)
+	@NotNull
 	private PerfilUsuario perfil;
 	
 	@OneToMany(mappedBy = "comprador")
@@ -64,8 +65,15 @@ public class Usuario implements EntityBasic<Long> {
 	private Seguranca seguranca;
 	
 	@Column(name = "EMAIL", nullable = false)
-	@Pattern(regexp="([a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,4}+\\.[a-zA-Z]{2})|([a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,4})")
+	/**
+	@Pattern(regexp="([a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,4}+\\.[a-zA-Z]{2})|([a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,4})" 
+			, message = "O dados informados são incompatíveis com o padrão de e-mails" )
+	**/		
 	private String email;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ENDERECO_ID")
+	private Endereco endereco;
 	
 	/* (non-Javadoc)
 	 * @see com.fiap.leilao.domain.EntityBasic#getId()
@@ -145,5 +153,13 @@ public class Usuario implements EntityBasic<Long> {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}	
 }

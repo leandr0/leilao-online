@@ -8,6 +8,7 @@ import java.util.List;
 import com.fiap.leilao.domain.Leilao;
 import com.fiap.leilao.domain.Usuario;
 import com.fiap.leilao.domain.exception.LeilaoDomainException;
+import com.fiap.leilao.domain.exception.LeilaoDomainArgumentException;
 
 /**
  * @author Leandro
@@ -25,26 +26,53 @@ public interface UsuarioBean extends AbstractDomain<Usuario>{
 	 * @param login
 	 * @param senha
 	 * @return
-	 * @throws IllegalArgumentException
+	 * @throws LeilaoDomainArgumentException
 	 * @throws LeilaoDomainException
 	 */
-	public Usuario findByLoginSenha(String login , String senha) throws IllegalArgumentException , LeilaoDomainException;
+	public Usuario pesquisaLoginSenha(String login , String senha) throws LeilaoDomainArgumentException , LeilaoDomainException;
 	
 	/**
 	 * 
 	 * @param usuario
 	 * @return
-	 * @throws IllegalArgumentException
+	 * @throws LeilaoDomainArgumentException
 	 * @throws LeilaoDomainException
 	 */
-	public List<Leilao> searchLeiloesUsuario(Usuario usuario) throws IllegalArgumentException , LeilaoDomainException;
+	public List<Leilao> pesquisaLeiloesUsuario(Usuario usuario) throws LeilaoDomainArgumentException , LeilaoDomainException;
 	
 	/**
 	 * 
 	 * @param usuario
 	 * @return
-	 * @throws IllegalArgumentException
+	 * @throws LeilaoDomainArgumentException
 	 * @throws LeilaoDomainException
 	 */
-	public List<Leilao> searchLeiloesLance(Usuario usuario) throws IllegalArgumentException , LeilaoDomainException;
+	public List<Leilao> pesquisaLeiloesLance(Usuario usuario) throws LeilaoDomainArgumentException , LeilaoDomainException;
+	
+	/**
+	 * 
+	 * @param usuario
+	 * @return
+	 * @throws LeilaoDomainArgumentException
+	 * @throws LeilaoDomainException
+	 */
+	public List<Leilao> pesquisaLeiloesGanhos(Usuario usuario) throws LeilaoDomainArgumentException , LeilaoDomainException;
+	
+	/**
+	 * 
+	 * @param chaveSeguranca
+	 * @return
+	 * @throws LeilaoDomainArgumentException
+	 * @throws LeilaoDomainException
+	 */
+	public Usuario pesquisaChaveSeguranca(String chaveSeguranca)throws LeilaoDomainArgumentException , LeilaoDomainException;
+	
+	/**
+	 * 
+	 * @param usuario
+	 * @return
+	 * @throws LeilaoDomainArgumentException
+	 * @throws LeilaoDomainException
+	 */
+	public Usuario salvarUsuario(Usuario usuario)throws LeilaoDomainArgumentException , LeilaoDomainException;
 }
