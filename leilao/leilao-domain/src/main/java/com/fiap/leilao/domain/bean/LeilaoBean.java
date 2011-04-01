@@ -12,18 +12,22 @@ import com.fiap.leilao.domain.exception.LeilaoDomainArgumentException;
 import com.fiap.leilao.domain.type.StatusLeilao;
 
 /**
- * Interface que permite
+ * Interface que permite iterar com a camada de domínio <p>
+ * para a entidade {@link Leilao}
  * @author Leandro
  *
  */
 public interface LeilaoBean extends AbstractDomain<Leilao> {
 	
+	/**
+	 * Mapeamento JNDI para o EJB Bean que implementará esta interface
+	 */
 	public static final String JNDI_NAME = "leilaoBean";
 	
 	/**
-	 * 
-	 * @param statusLeilao
-	 * @return
+	 * Pesquisa leilões com o status informado
+	 * @param statusLeilao {@link StatusLeilao}
+	 * @return {@link List}{@code <}{@link Leilao}{@code>}
 	 * @throws IllegalArgumentException
 	 * @throws LeilaoDomainException
 	 */
@@ -31,40 +35,40 @@ public interface LeilaoBean extends AbstractDomain<Leilao> {
 	
 	/**
 	 * Busca leiloes que o usuário pode enviar lance
-	 * @param statusLeilao
-	 * @return
+	 * @param usuario {@link Usuario}
+	 * @return  {@link List}{@code <}{@link Leilao}{@code>}
 	 * @throws LeilaoDomainArgumentException
 	 * @throws LeilaoDomainException
 	 */
-	public List<Leilao> pesquisaLeilaoEnviarLance(Usuario ususUsuario)throws LeilaoDomainArgumentException , LeilaoDomainException;
+	public List<Leilao> pesquisaLeilaoEnviarLance(Usuario usuario)throws LeilaoDomainArgumentException , LeilaoDomainException;
 	
 	/**
-	 * 
-	 * @return
+	 * Pesquisa leilões a serem finalizados
+	 * @return {@link List}{@code <}{@link Long}{@code >}
 	 * @throws LeilaoDomainException
 	 */
 	public List<Long> pesquisaFinalizarLeilao() throws  LeilaoDomainException;
 	
 	/**
-	 * 
+	 * Atualiza lista de leilões para status de finalizado
 	 * @param leiloesFinalizados
 	 * @throws LeilaoDomainException
 	 */
 	public void updateLeiloesFinalizados(List<Long> leiloesFinalizados)throws  LeilaoDomainException;
 	
 	/**
-	 * 
+	 * Pesquisa leiões que o usuário informado pode enviar lances
 	 * @param ususUsuario
-	 * @return
+	 * @return  {@link List}{@code <}{@link Leilao}{@code>}
 	 * @throws LeilaoDomainArgumentException
 	 * @throws LeilaoDomainException
 	 */
-	public List<Leilao> pesquisaLeilaoStatusUsuario(Usuario ususUsuario)throws LeilaoDomainArgumentException , LeilaoDomainException;
+	public List<Leilao> pesquisaLeilaoStatusUsuario(Usuario usuario)throws LeilaoDomainArgumentException , LeilaoDomainException;
 	
 	/**
-	 * 
+	 * Pesquisa leilão por id
 	 * @param idLeilao
-	 * @return
+	 * @return {@link Leilao}
 	 * @throws LeilaoDomainArgumentException
 	 * @throws LeilaoDomainException
 	 */

@@ -29,7 +29,7 @@ public class UICadastrarUsuarioBean extends UIAbstractBean{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2541100049136340595L;
+	private static final long serialVersionUID = -8096694653534413514L;
 
 	private final Log LOG = LogFactory.getLog(UICadastrarUsuarioBean.class);
 	
@@ -64,15 +64,18 @@ public class UICadastrarUsuarioBean extends UIAbstractBean{
 	public String salvarUsuario(){
 		try{
 			
-			if(usuario.getSeguranca().getSenha().equals(confirmSenha))
+			if(usuario.getSeguranca().getSenha().equals(confirmSenha)){
 				usuarioBean.salvarUsuario(usuario);
-			else
+				init();
+				showMessageInfo("Usuário salvo com sucesso! Efetue o login.");
+			}else
 				showMessageError("Os campos com os dados de senha estão divergentes");
 			
+		}catch (LeilaoDomainArgumentException e) {
+			showMessageError(e.getMessage());
 		}catch (Exception e) {
 			LOG.error("Erro ao salvar usuario", e);
-		}finally{
-			init();
+			showMessageError("Erro ao salvar usuário.");
 		}
 		
 		return null;

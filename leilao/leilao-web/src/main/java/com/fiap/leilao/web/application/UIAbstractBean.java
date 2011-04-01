@@ -30,8 +30,10 @@ public abstract class UIAbstractBean implements Serializable{
 	private static final long serialVersionUID = -2478948320073700578L;
 	
 	protected HttpSession session;
-
-	//protected String user;
+	
+	protected String nomeUsuario;
+	
+	protected String chaveServico;
 	
 	@EJB
 	protected SegurancaBean segurancaBean;
@@ -104,5 +106,33 @@ public abstract class UIAbstractBean implements Serializable{
 	protected void showMessageFatal(String message){
 		FacesContext.getCurrentInstance().addMessage(null, 
 				new FacesMessage(FacesMessage.SEVERITY_FATAL,"Fatal",message));
+	}
+
+	public String getNomeUsuario() {
+		
+		try{
+			nomeUsuario = getUsuario().getNome();
+		}catch (Exception e) {
+			System.err.println("Erro ao recuperar usuario");
+		}	
+		
+		return nomeUsuario;
+	}
+
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
+	}
+
+	public String getChaveServico() {
+		try{
+			chaveServico = getUsuario().getSeguranca().getChaveServico();
+		}catch (Exception e) {
+			System.err.println("Erro ao recuperar usuario");
+		}
+		return chaveServico;
+	}
+
+	public void setChaveServico(String chaveServico) {
+		this.chaveServico = chaveServico;
 	}
 }

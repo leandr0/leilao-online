@@ -11,7 +11,6 @@
 	</queryString>
 	<field name="ID" class="java.lang.Long"/>
 	<field name="DESCRICAO" class="java.lang.String"/>
-	<field name="FOTO" class="java.lang.Object"/>
 	<field name="QUANTIDADE" class="java.lang.Integer"/>
 	<field name="PRODUTO_ID" class="java.lang.Long"/>
 	<columnHeader>

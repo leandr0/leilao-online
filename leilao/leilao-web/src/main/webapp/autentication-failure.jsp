@@ -16,7 +16,7 @@
 							<h5 >
 								Clique no link abaixo para voltar à página inicial. 
 							</h5>
-							<a href="/leilao-web/pages/home.jsf">HOME</a>
+							<a href="/leilao-web/pages/leilao-home.jsf">HOME</a>
 						</div>
 					</fieldset>
 				</div>

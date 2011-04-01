@@ -25,7 +25,7 @@ import com.fiap.leilao.domain.Produto;
 import com.fiap.leilao.domain.Usuario;
 
 /**
- * Bean JSF com escopo de sessão para trata requisições 
+ * Bean JSF com escopo de sessão para trata requisições de criar leilão
  * @author Leandro
  *
  */
@@ -40,6 +40,7 @@ public class UICriarLeilaoBean extends UIAbstractBean{
 
 	private static final Log LOG = LogFactory.getLog(UICriarLeilaoBean.class);
 	
+	/*Bean de negócio para criação de leilão*/
 	@EJB
 	private CriarLeilaoBean criarLeilaoBean;
 

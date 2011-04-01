@@ -12,6 +12,9 @@ import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.fiap.leilao.domain.Lance;
 import com.fiap.leilao.domain.Leilao;
 import com.fiap.leilao.domain.Produto;
@@ -32,6 +35,8 @@ public class ManagerLanceBean extends AbstractDomainBean<Lance>implements LanceB
 	 * 
 	 */
 	private static final long serialVersionUID = 243692927104355027L;
+	
+	private static final Log LOG = LogFactory.getLog(ManagerLanceBean.class);
 
 	@Override
 	public Long pesquisarMaiorLanceLeilao(Long idLeilao) throws LeilaoDomainArgumentException, LeilaoDomainException {
@@ -57,20 +62,21 @@ public class ManagerLanceBean extends AbstractDomainBean<Lance>implements LanceB
 
 			Long result = null;
 
-			while(resultSet.next()){
+			if(resultSet.next()){
 				result = resultSet.getLong(1);
 			}
 
 			return result;
 
-		}catch (Throwable e) {
+		}catch (Exception e) {
+			LOG.error("Erro ao consultar maior lance do leilao",e);
 			throw new LeilaoDomainException(e);
 		}finally{
 
 			try{
 				conn.close();
-			}catch (Throwable e) {
-				System.err.println(e.getMessage());
+			}catch (Exception e) {
+				LOG.error("Erro ao fechar conexao",e);
 			}
 		}	
 	}

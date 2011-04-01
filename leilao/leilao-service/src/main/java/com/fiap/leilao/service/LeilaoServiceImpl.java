@@ -71,7 +71,9 @@ public class LeilaoServiceImpl implements LeilaoService {
 			
 			LOG.info("Enviar lance");
 			
-			controllesService.enviarLance(Long.valueOf(codLeilao), Double.valueOf(vlrLance), chaveSeguranca);
+			String valorLance = vlrLance.replace(",", ".");
+			
+			controllesService.enviarLance(Long.valueOf(codLeilao), Double.valueOf(valorLance) , chaveSeguranca);
 			
 			result.use(Results.json()).from("Lance enviado com sucesso","message").serialize();
 			
@@ -79,5 +81,21 @@ public class LeilaoServiceImpl implements LeilaoService {
 			result.use(Results.json()).from(e.getMessage(),"error").serialize();
 		}
 		
+	}
+
+
+	@Override
+	@Path("finalizarLeilao")
+	public void finalizarLeilao() {
+		
+		try{
+			
+			controllesService.finalizarLeilao();
+			
+			result.use(Results.json()).from("Solicitação enviada com sucesso","message").serialize();
+			
+		}catch (Exception e) {
+			result.use(Results.json()).from(e.getMessage(),"error").serialize();
+		}
 	}
 }

@@ -23,5 +23,10 @@ public interface LeilaoService extends Serializable {
 	 * @param vlrLance
 	 */
 	public void enviarLanceLeilao(String codLeilao , String vlrLance , String chaveSeguranca);
+
+	/**
+	 * 
+	 */
+	public void finalizarLeilao();
 	
 }

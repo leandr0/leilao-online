@@ -18,18 +18,23 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.cfg.NotYetImplementedException;
 
 import com.fiap.leilao.domain.Leilao;
 import com.fiap.leilao.domain.Produto;
+import static com.fiap.leilao.domain.QueryLeilaoType.*;
 import com.fiap.leilao.domain.Usuario;
 import com.fiap.leilao.domain.exception.LeilaoDomainArgumentException;
 import com.fiap.leilao.domain.exception.LeilaoDomainException;
 import com.fiap.leilao.domain.type.StatusLeilao;
 
 /**
+ * Bean que permite iterar com a camada de domínio <p>
+ * para a entidade {@link Leilao}
  * @author Leandro
  *
  */
@@ -66,12 +71,15 @@ public class ManagerLeilaoBean extends AbstractDomainBean<Leilao> implements Lei
 
 			return typedQuery.getResultList();
 		}catch (Exception e) {
+			LOG.error("Erro ao pesquisar leilao por status",e);
 			throw new LeilaoDomainException(e);
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * A decisão arquitetural de utilizar as queries nativas <p>
+	 * diretamente com um {@link DataSource} é devido a exceção {@link NotYetImplementedException}<p>
+	 * ser lançada pelo perovider hibernate quando executada utilizando um arquivo orm.xml<p>
 	 * @see com.fiap.leilao.domain.bean.LeilaoBean#pesquisaFinalizarLeilao()
 	 */
 	@Override
@@ -85,7 +93,7 @@ public class ManagerLeilaoBean extends AbstractDomainBean<Leilao> implements Lei
 
 			LOG.info("Iniciando pesquisa para finalizar leilao");
 			
-			PreparedStatement querySearch = conn.prepareStatement("SELECT ID FROM LEILAO WHERE DT_FINAL < ?");
+			PreparedStatement querySearch = conn.prepareStatement(PESQUISA_FINALIZAR_LEILAO.nativeQuery);
 
 			querySearch.setDate(1, getSqlDate());
 
@@ -99,22 +107,22 @@ public class ManagerLeilaoBean extends AbstractDomainBean<Leilao> implements Lei
 
 			return result;
 
-		}catch (Throwable e) {
-			LOG.fatal("ERROR : "+e.getMessage());
+		}catch (Exception e) {
+			LOG.error("Erro ao excutar pesquiza de finalizar leilao ",e);
 			throw new LeilaoDomainException(e);
 		}finally{
 
 			try{
 				conn.close();
-			}catch (Throwable e) {
+			}catch (Exception e) {
 				LOG.error("Erro ao fechar conexao");
 			}
 		}
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Cria uma data com o horário igual à 00:00
+	 * @return {@link Date}
 	 */
 	private Date getSqlDate(){
 
@@ -125,13 +133,13 @@ public class ManagerLeilaoBean extends AbstractDomainBean<Leilao> implements Lei
 		calendar.set(Calendar.HOUR,0);
 		calendar.set(Calendar.HOUR_OF_DAY,0);
 
-		LOG.info("Data limite do leilao : "+calendar.getTime());
-		
 		return new Date(calendar.getTimeInMillis());
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * A decisão arquitetural de utilizar as queries nativas <p>
+	 * diretamente com um {@link DataSource} é devido a exceção {@link NotYetImplementedException}<p>
+	 * ser lançada pelo perovider hibernate quando executada utilizando um arquivo orm.xml<p>
 	 * @see com.fiap.leilao.domain.bean.LeilaoBean#updateLeiloesFinalizados(java.util.List)
 	 */
 	@Override
@@ -143,7 +151,7 @@ public class ManagerLeilaoBean extends AbstractDomainBean<Leilao> implements Lei
 
 			conn = dataSource.getConnection();
 
-			PreparedStatement queryUpdate = conn.prepareStatement("UPDATE LEILAO  SET  STATUS = ? WHERE ID = ?");
+			PreparedStatement queryUpdate = conn.prepareStatement(UPDATE_LISTA_FINALIZAR_LEILAO.nativeQuery);
 
 			int batch = 0;
 
@@ -162,14 +170,14 @@ public class ManagerLeilaoBean extends AbstractDomainBean<Leilao> implements Lei
 
 			queryUpdate.executeBatch();
 			
-		}catch (Throwable e) {
-			LOG.fatal("ERROR :"+e.getMessage());
+		}catch (Exception e) {
+			LOG.error("Erro ao atualizar leiloes ",e);
 			throw new LeilaoDomainException(e);
 		}finally{
 
 			try{
 				conn.close();
-			}catch (Throwable e) {
+			}catch (Exception e) {
 				LOG.error("Erro ao fechar conexao");
 			}
 		}		
@@ -228,10 +236,17 @@ public class ManagerLeilaoBean extends AbstractDomainBean<Leilao> implements Lei
 
 			return typedQuery.getResultList();
 		}catch (Exception e) {
+			LOG.error("Erro ao pesquisar leilao por status",e);
 			throw new LeilaoDomainException(e);
 		}
 	}
 
+	/**
+	 * A decisão arquitetural de utilizar as queries nativas <p>
+	 * diretamente com um {@link DataSource} é devido a exceção {@link NotYetImplementedException}<p>
+	 * ser lançada pelo perovider hibernate quando executada utilizando um arquivo orm.xml<p>
+	 * @see com.fiap.leilao.domain.bean.LeilaoBean#pesquisarLeilaoGanhador(java.lang.Long)
+	 */
 	@Override
 	public Leilao pesquisarLeilaoGanhador(Long idLeilao)throws LeilaoDomainArgumentException, LeilaoDomainException {
 
@@ -243,13 +258,7 @@ public class ManagerLeilaoBean extends AbstractDomainBean<Leilao> implements Lei
 			
 			conn = dataSource.getConnection();
 
-			PreparedStatement querySelect = conn.prepareStatement(
-					" SELECT LL.ID , PROD.DESCRICAO,USU.NOME , USU.EMAIL  " +
-					" FROM LEILAO LL INNER JOIN USUARIO USU " +
-					" ON LL.COMPRADOR_ID = USU.ID " +
-					" INNER JOIN PRODUTO PROD	" +
-					" ON PROD.LEILAO_ID = LL.ID "+
-					" WHERE LL.ID = ? ");
+			PreparedStatement querySelect = conn.prepareStatement(PESQUISA_GANHADOR_LEILAO.nativeQuery);
 
 			
 			querySelect.setLong(1, idLeilao);
@@ -278,13 +287,13 @@ public class ManagerLeilaoBean extends AbstractDomainBean<Leilao> implements Lei
 			return leilao;
 
 		}catch (Exception e) {
-			LOG.fatal("ERROR :"+e.getMessage());
+			LOG.error("Erro ao pesquisar ganhador leilao ",e);
 			throw new LeilaoDomainException(e);
 		}finally{
 
 			try{
 				conn.close();
-			}catch (Throwable e) {
+			}catch (Exception e) {
 				LOG.error("Erro ao fechar conexao");
 			}
 		}		

@@ -75,4 +75,10 @@ public interface UsuarioBean extends AbstractDomain<Usuario>{
 	 * @throws LeilaoDomainException
 	 */
 	public Usuario salvarUsuario(Usuario usuario)throws LeilaoDomainArgumentException , LeilaoDomainException;
+	
+	/**
+	 * Cria o usuario Admin do sistema 
+	 * Utilizado para testes do sistema
+	 */
+	public void criarUsuarioAdmin();
 }

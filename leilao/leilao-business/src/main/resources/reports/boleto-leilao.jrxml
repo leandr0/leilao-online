@@ -47,21 +47,21 @@ where ll.id = $P{ID_LEILAO}]]>
 	<field name="EMAIL" class="java.lang.String"/>
 	<field name="NOME" class="java.lang.String"/>
 	<field name="PERFIL" class="java.lang.String"/>
-	<field name="SEGURANCA_ID" class="java.lang.Long"/>
 	<field name="ENDERECO_ID" class="java.lang.Long"/>
+	<field name="SEGURANCA_ID" class="java.lang.Long"/>
 	<field name="BAIRRO" class="java.lang.String"/>
 	<field name="CEP" class="java.lang.String"/>
 	<field name="ENDERECO" class="java.lang.String"/>
 	<field name="ESTADO" class="java.lang.String"/>
 	<field name="MUNICIPIO" class="java.lang.String"/>
 	<field name="NUMERO" class="java.lang.String"/>
+	<field name="DT_CADASTRO" class="java.sql.Timestamp"/>
 	<field name="DT_FINAL" class="java.sql.Timestamp"/>
 	<field name="STATUS" class="java.lang.Integer"/>
+	<field name="VALOR_GANHADOR" class="java.lang.Double"/>
 	<field name="VALOR_INICIAL" class="java.lang.Double"/>
 	<field name="COMPRADOR_ID" class="java.lang.Long"/>
 	<field name="VENDEDOR_ID" class="java.lang.Long"/>
-	<field name="VALOR_GANHADOR" class="java.lang.Double"/>
-	<field name="DT_CADASTRO" class="java.sql.Timestamp"/>
 	<field name="DESCRICAO" class="java.lang.String"/>
 	<field name="LEILAO_ID" class="java.lang.Long"/>
 	<field name="ID_PRODUTO" class="java.lang.Long"/>

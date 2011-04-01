@@ -195,7 +195,14 @@ public class ManagerLeilaoMail implements LeilaoMail {
 		
 		String mensagem = templateMessage.APROVAR_LEILAO_MAIL.template;
 		
-		mensagem = mensagem.replace("$NOME", leilao.getComprador().getNome());
+		String nome = null;
+		
+		if(leilao.getComprador() != null)
+			nome = leilao.getComprador().getNome();
+		else
+			nome = leilao.getVendedor().getNome();
+		
+		mensagem = mensagem.replace("$NOME", nome);
 		mensagem = mensagem.replace("$DESCRICAO", leilao.getProduto().getDescricao());
 		mensagem = mensagem.replace("$CODIGO", ""+leilao.getId());
 		

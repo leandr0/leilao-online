@@ -14,6 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.fiap.leilao.business.EnviarLanceBean;
+import com.fiap.leilao.business.FechamentoLeilaoBean;
 import com.fiap.leilao.domain.Item;
 import com.fiap.leilao.domain.Lance;
 import com.fiap.leilao.domain.Leilao;
@@ -54,6 +55,9 @@ public class ManagerControllerServiceLeilaoBean implements ControllerServiceLeil
 
 	@EJB
 	private SegurancaBean segurancaBean;
+
+	@EJB
+	private FechamentoLeilaoBean fechamentoLeilaoBean;
 
 	private static final Log LOG = LogFactory.getLog(ManagerControllerServiceLeilaoBean.class);
 
@@ -119,6 +123,18 @@ public class ManagerControllerServiceLeilaoBean implements ControllerServiceLeil
 
 			enviarLanceBean.enviarLance(lance, usuario);
 
+		}catch (Throwable e) {
+			throw new LeilaoServiceException(e.getMessage());
+		}
+
+	}
+
+	@Override
+	public void finalizarLeilao() throws LeilaoServiceException {
+		try{
+
+			fechamentoLeilaoBean.finalizarLeilao();
+			
 		}catch (Throwable e) {
 			throw new LeilaoServiceException(e.getMessage());
 		}

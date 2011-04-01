@@ -42,16 +42,18 @@ public class ManagerEnviarRelatorioBean implements EnviarRelatorioBean {
 	@Resource(mappedName = "java:LeilaoDS")
 	protected DataSource dataSource;
 
+	/*Bean da camada de domínio*/
 	@EJB
 	private LeilaoBean leilaoBean;
 	
-	/* (non-Javadoc)
+	/**
+	 * O bean é anotado com @Asynchronous, pois para as ações que geram relatório 
+	 * demoram e também o envio de e-mails podem demorar , 
+	 * devido a disponibilidade da rede
+	 * Assim não prendendo as requisições
 	 * @see com.fiap.leilao.business.GerarRelatorioBean#gravarRelatorio()
 	 */
 	@Override
-	/*
-	 * 
-	 */
 	@Asynchronous
 	public void enviarRelatorio(Long idLeilao) {
 
@@ -63,12 +65,16 @@ public class ManagerEnviarRelatorioBean implements EnviarRelatorioBean {
 			
 			connection = dataSource.getConnection();
 			
+			/*Criando uma instância para gerar relatótio passando um data source*/
 			GerarRelatorio gerarRelatorio = new GerarRelatorioBoleto(dataSource);
 			
-			LOG.info("Gerando relatorio");
+			/*Gerando relatório com o ID do leilão informado*/
 			byte[] report = gerarRelatorio.gerarRelatorio(idLeilao);
 			
-			LOG.info("Enviando relatorio por e-mail");
+			/*
+			 * Enviando e-mail através da classe de enviar e-mail
+			 * com padrão Fluent Interface
+			 */
 			new ManagerLeilaoMail()
 				.addEmailTo(leilao.getComprador().getEmail())
 				.addAnexo(report,"Leilao-Cod-"+idLeilao+".pdf")

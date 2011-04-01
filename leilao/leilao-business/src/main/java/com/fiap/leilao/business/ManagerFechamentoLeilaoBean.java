@@ -6,9 +6,9 @@ package com.fiap.leilao.business;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Schedule;
-import javax.ejb.Stateless;
+import javax.ejb.Singleton;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,8 +29,13 @@ import com.fiap.leilao.domain.exception.LeilaoDomainException;
  * @author Leandro
  *
  */
-@Stateless(mappedName = FechamentoLeilaoBean.JNDI_NAME)
-@Local(FechamentoLeilaoBean.class)
+/*
+ * A annotacão {@link Singleton} faz com que o container controle os acessos
+ * a este bean , gerando apenas uma instância ,desta foram implementado o 
+ * padrão Singleton
+ */
+@Singleton(mappedName = FechamentoLeilaoBean.JNDI_NAME)
+@Remote(FechamentoLeilaoBean.class)
 public class ManagerFechamentoLeilaoBean implements FechamentoLeilaoBean {
 
 	/**
@@ -40,56 +45,64 @@ public class ManagerFechamentoLeilaoBean implements FechamentoLeilaoBean {
 
 	private static final Log LOG = LogFactory.getLog(ManagerFechamentoLeilaoBean.class);
 	
+	/*Bean da camada de domínio*/
 	@EJB
 	private LeilaoBean leilaoBean;
 	
+	/*Bean da camada de domínio*/
 	@EJB
 	private LanceBean lanceBean;
 	
+	/*Bean de negócio que gera bolete com jasper report e envia por e-mail */
 	@EJB
 	private EnviarSolicitacaoRelatorioBean enviarSolicitacaoRelatorioBean;
 	
-	/*
-	 * (non-Javadoc)
+	/**
+	 * A anotação {@link Schedule} faz com que tenhamos um TimeService
+	 * que executa este método todos os dias no horário definido
+	 * às 00 horas e 00 minutos
 	 * @see com.fiap.leilao.business.FechamentoLeilaoBean#finalizarLeilao()
 	 */
-	@Override
 	@Schedule(hour="00", minute="00")
+	@Override
 	public void finalizarLeilao() throws FinalizarLeilaoBusinessException {
 		
 		try{
 			
 			LOG.info("Iniciando processo Schedule para finalizar leilao");
-
+			
 			List<Long> leiloes = leilaoBean.pesquisaFinalizarLeilao();
 			LOG.info("Numeros de leiloes finalizados "+(leiloes != null ? leiloes.size() : 0));
 			
 			LOG.info("Iniciando processo de atualizacao de leiloes");
 			leilaoBean.updateLeiloesFinalizados(leiloes);
 			
-	
+			/*Itera lista de ID`s de leilão*/
 			for (Long idLeilao : leiloes) {
 				
 				try{
 				
 					atribuirGanhadorLeilao(idLeilao);
 					
-					LOG.info("Enviando solicitacao de relatorio para fila");
+					/*Enviando solicitacao de relatorio para fila*/
 					enviarSolicitacaoRelatorioBean.enviarSolicitacaoRelatorioEmail(idLeilao);
 					
-				}catch (Exception e) {
+				}catch (LeilaoDomainArgumentException e) {
+					LOG.warn(e.getMessage());
+				}
+				catch (Exception e) {
 					LOG.error("Erro no precesso de finalizacao do leilao id : "+idLeilao);
 				}
 			}
 			
-		}catch (Throwable e) {
+		}catch (Exception e) {
 			LOG.error("Erro ao finalizar leilao : "+e.getMessage());
 			throw new FinalizarLeilaoBusinessException(e.getMessage());
 		}		
 	}
 	
 	/**
-	 * Faz chamada da query que retorna o maior lance para o {@link Leilao} com p ID informado,<p>
+	 * Faz chamada da query que retorna o maior lance para o {@link Leilao} com o ID informado,<p>
 	 * e atribui ao {@link Leilao} o {@link Usuario} como ganhador 
 	 * @param idLeilao {@link Long}
 	 * @throws LeilaoDomainArgumentException
@@ -100,6 +113,9 @@ public class ManagerFechamentoLeilaoBean implements FechamentoLeilaoBean {
 		LOG.info("Atribuindo ganhador ao leilao");
 		
 		Long idLance = lanceBean.pesquisarMaiorLanceLeilao(idLeilao);
+		
+		if(idLance == null)
+			throw new LeilaoDomainArgumentException("O leilao nao tem nenhum lance");
 		
 		Lance lance = new Lance();
 		lance.setId(idLance);

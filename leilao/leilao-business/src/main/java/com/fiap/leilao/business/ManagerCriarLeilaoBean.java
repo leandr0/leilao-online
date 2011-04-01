@@ -37,6 +37,7 @@ public class ManagerCriarLeilaoBean implements CriarLeilaoBean {
 	 */
 	private static final long serialVersionUID = -4647706789163695523L;
 	
+	/*Bean da camada de domínio*/
 	@EJB
 	private LeilaoBean leilaoBean;
 	
@@ -77,7 +78,7 @@ public class ManagerCriarLeilaoBean implements CriarLeilaoBean {
 			
 			return leilao.getId();
 			
-		}catch (Throwable e) {
+		}catch (Exception e) {
 			LOG.error("Erro a salva item ", e);
 			throw new LeilaoBusinessException(e);
 		}
