@@ -33,4 +33,10 @@ public interface ControllerServiceLeilao extends Serializable{
 	 */
 	public void enviarLance(Long codLeilao , Double valorLance , String usuario)throws LeilaoServiceException;
 
+	/**
+	 * 
+	 * @throws LeilaoServiceException
+	 */
+	public void finalizarLeilao()throws LeilaoServiceException;
+	
 }

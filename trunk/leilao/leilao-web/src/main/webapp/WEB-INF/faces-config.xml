@@ -66,6 +66,12 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>chave-servico</from-outcome>
+			<to-view-id>/pages/chave-servico.jsf</to-view-id>
+			<redirect/>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>home</from-outcome>
 			<to-view-id>/home.jsf</to-view-id>
 			<redirect/>
